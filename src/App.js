@@ -1,11 +1,10 @@
 import React from 'react';
 import {Button} from "antd";
 
-function App() {
+function App(props) {
   return (
     <div className="App">
-        Hello React！
-        <Button type="primary">Click Me!</Button>
+        {props.children}
     </div>
   );
 }
