@@ -1,10 +1,12 @@
 import React from 'react';
 import {Button} from "antd";
+import Router from "./router";
 
 function App(props) {
-  return (
+    console.log(props);
+    return (
     <div className="App">
-        {props.children}
+        <Router />
     </div>
   );
 }

@@ -3,19 +3,34 @@ import App from "../App";
 
 import {
     HashRouter,
-    BrowserRouter as Router,
+    BrowserRouter,
     Switch,
     Route,
     Link
 } from "react-router-dom";
+import Admin from '@/layout/admin';
+import Login from '@/pages/login';
+import Dashboard from '@/pages/dashboard';
+import SysRole from "@/pages/sys/role/sys-role";
 
-export default class ERouter extends Component{
+export default class Router extends Component{
     render() {
         return (
             <HashRouter>
-                <App>
-
-                </App>
+                <Switch>
+                    <Route path="/login" component={Login}/>
+                    <Route path="/" render={()=>{
+                        return (
+                            <Admin>
+                                <Switch>
+                                    <Route path='/dashboard' component={Dashboard} />
+                                    <Route path='/sys/role' component={SysRole} />
+                                </Switch>
+                            </Admin>
+                        )
+                    }}
+                     />
+                </Switch>
             </HashRouter>
         )
     }
