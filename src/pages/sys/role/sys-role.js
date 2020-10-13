@@ -2,6 +2,7 @@ import React from "react";
 import { PlusOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import ProTable, { ProColumns } from '@ant-design/pro-table';
+import axios from 'axios'
 
 const columns = [
     {
@@ -11,36 +12,43 @@ const columns = [
         width: 80,
     },
     {
-        title: '状态',
-        dataIndex: 'status',
-        initialValue: 'all',
-        width: 100,
-        filters: true,
-        valueEnum: {
-            all: { text: '全部', status: 'Default' },
-            close: { text: '关闭', status: 'Default' },
-            running: { text: '运行中', status: 'Processing' },
-            online: { text: '已上线', status: 'Success' },
-            error: { text: '异常', status: 'Error' },
-        },
-    },
-    {
-        title: '进度',
-        key: 'progress',
-        dataIndex: 'progress',
-        valueType: (item) => ({
-            type: 'progress',
-            status: item.status !== 'error' ? 'active' : 'exception',
-        }),
+        title: '角色名称',
+        dataIndex: 'FRoleName',
         width: 200,
     },
     {
-        title: '更新时间',
-        key: 'since2',
-        width: 120,
-        dataIndex: 'createdAt',
-        valueType: 'date',
+        title: '角色编号',
+        dataIndex: 'FRoleCode',
+        width: 100,
     },
+    {
+        title: '状态',
+        dataIndex: 'FEnable',
+        width: 100,
+        valueEnum: {
+            true: {
+                text: '启用',
+                status: true
+            },
+            false: {
+                text: '禁用',
+                status: true
+            }
+
+        }
+    },
+    {
+        title: '排序',
+        dataIndex: 'FSort',
+        width: 80,
+        search: false,
+    },
+    {
+        title: '备注',
+        dataIndex: 'FMemo',
+        width: 150,
+        search: false,
+    }
 ];
 
 export default class SysRole extends React.Component{
@@ -51,6 +59,28 @@ export default class SysRole extends React.Component{
             loading: false,
             dataSource: []
         }
+    }
+
+    componentDidMount() {
+        this.getRole();
+    }
+
+    getRole = ()=>{
+        axios({
+            url: '/api/Role/Get?pageSize=50&page=1&currentPage=1',
+            method: 'get'
+        }).then(res=>{
+            console.log(res);
+            let r = res.data;
+            if (r.success){
+                this.setState({
+                    dataSource: r.response.data.map(item=>{
+                        item.key = item.FRoleId;
+                        return item;
+                    })
+                })
+            }
+        })
     }
 
     render() {
@@ -81,6 +111,10 @@ export default class SysRole extends React.Component{
                             新建
                         </Button>,
                     ]}
+                    onSubmit={(params)=>{
+                        console.log(params);
+                        this.getRole();
+                    }}
                 />
             </div>
         )
