@@ -1,4 +1,6 @@
 import axios from 'axios'
+import Qs from 'qs'
+import { getToken } from '@/utils/auth'
 import { buildAxiosPageParams, buildAxiosSortParams, buildAxiosFilterParams } from "@/utils/common"
 
 
@@ -73,9 +75,9 @@ http.defaults.withCredentials = false;
 //HTTPrequest拦截
 http.interceptors.request.use(config => {
     // config.headers['Authorization'] = "Bearer " + token
-    // if (getToken && getToken()) {
-    //     config.headers['Authorization'] = "Bearer " + getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
-    // }
+    if (getToken()) {
+        config.headers['Authorization'] = "Bearer " + getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
+    }
     config.headers['Content-Type'] = 'application/json'
     return config
 }, error => {
@@ -99,10 +101,10 @@ http.interceptors.response.use(res => {
     const success = data.success;
 
     if (status != 200){
-        Notification.error({
-            title: '提示',
-            message: message,
-        });
+        // Notification.error({
+        //     title: '提示',
+        //     message: message,
+        // });
 
         if (status == 401){
             // store.dispatch('LogOut').then(() => {

@@ -8,7 +8,7 @@ import {
     ContainerOutlined,
     MailOutlined,
 } from '@ant-design/icons';
-import axios from 'axios'
+import http from '@/utils/http'
 import { BuildTree } from "@/utils/common"
 
 const { SubMenu } = Menu;
@@ -19,15 +19,12 @@ export default class SideMenu extends Component{
     };
 
     componentDidMount() {
-        axios({
+        http({
             url: "/api/Permission/Get",
             method: "post",
-            headers: {
-                'authorization' : 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IkU3RjVFRENBQTBDODlDMzVBMzZEMEM2QjUyRTE1MzM2QkJDNjJDNjkiLCJ0eXAiOiJhdCtqd3QiLCJ4NXQiOiI1X1h0eXFESW5EV2piUXhyVXVGVE5ydkdMR2sifQ.eyJuYmYiOjE2MDM3OTgwOTIsImV4cCI6MTYwMzgwMTY5MiwiaXNzIjoiaHR0cHM6Ly9vYS5rc3RvcGEuY29tLmNuOjgwMDAiLCJhdWQiOiJrc3RvcGEuY29yZS5hcGkiLCJjbGllbnRfaWQiOiJtdmMiLCJzdWIiOiIxIiwiYXV0aF90aW1lIjoxNjAzNzk4MDkyLCJpZHAiOiJsb2NhbCIsImlkIjoiMSIsImF2YXRhclBhdGgiOiJVc2VyL0F2YXRhckltZy9hZG1pbiIsImRlcHQiOiLova_ku7blvIDlj5Hlm6LpmJ8iLCJkZXB0SWQiOiIyMDY2IiwiZW1haWwiOiJibG9nYWRtaW5Aa3N0b3BhLmNvbS5jbiIsImdlbmRlciI6IueUtyIsInVzZXJuYW1lIjoiYWRtaW4iLCJuaWNlTmFtZSI6IuWQjuWPsOaAu-euoeeQhuWRmCIsInBob25lIjoiMTgxMjM0NTY3ODkiLCJvcmdOYW1lIjoi5piG5bGx5L2w5aWl6L2v5Lu25pyJ6ZmQ5YWs5Y-4Iiwib3JnIjoiMTAwMSIsInNjb3BlIjpbImVtYWlsIiwib3BlbmlkIiwicHJvZmlsZSIsImtzdG9wYS5jb3JlLmFwaSIsIm9mZmxpbmVfYWNjZXNzIl0sImFtciI6WyJwd2QiXX0.Gy-KENijSLJLs0uiXB8UnVpLVOq2Rt0Me7n8IgcmSUTjKDjH1BhH8RlZ_wTvRHxGGY0uteb9W_EsHEjJX4vg25bD-f0r1GZ0K6TULL56MzDJQ-VZAr6dKxkbeEfqQSBhY5jXw2DiqXmAFwi7nsHGh3df7vZdOkGZWCd37aM_ZZe0SnuKnPjSRcACdB00PBSDckinR_0--SY7hjx_p0Q6-NDu31FVaBQUcbdwQoLJKzaLhkGdSkjUbKXRy5OOUYBD-M5UJc50ly3slyphGkIzK0Vstjn_V9A4x8ueh_Mzvylqtvk7OsK5GPQ57ViLKndcnwgb2XQV2NN-eOrmilwKZg'
-            },
             data: {"page":1,"pageSize":2147483647,"sort":[],"filters":[{"groupOp":"AND","rules":[]}]}
         }).then(res=>{
-            let r = res.data;
+            let r = res;
             if (r.success){
                 let list = r.response.data.map(item=>{
                     return {

@@ -2,7 +2,7 @@ import React from "react";
 import { PlusOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import ProTable, { ProColumns } from '@ant-design/pro-table';
-import axios from 'axios'
+import { getAll } from '@/api/sys/role'
 
 const columns = [
     {
@@ -66,12 +66,10 @@ export default class SysRole extends React.Component{
     }
 
     getRole = ()=>{
-        axios({
-            url: '/api/Role/Get?pageSize=50&page=1&currentPage=1',
-            method: 'get'
-        }).then(res=>{
+        let form = {};
+        getAll(form).then(res=>{
             console.log(res);
-            let r = res.data;
+            let r = res;
             if (r.success){
                 this.setState({
                     dataSource: r.response.data.map(item=>{

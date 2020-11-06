@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from 'react-redux'
-import http from "@/utils/http";
+
+import { login } from "@/api/login"
 import { Form, Input, Button, Checkbox, Spin } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import './login.scss';
@@ -26,14 +27,13 @@ class Login extends React.Component{
         form.append("username", values.username);
         form.append("password", values.password);
 
-        http({
-            url: '/auth/connect/token',
-            method: 'post',
-            data: form
-        }).then(res=>{
+        login(form).then(res=>{
+            console.log(res);
             this.setState({
                 loading: false
             });
+            this.props.setToken(res.data.access_token);
+            this.props.history.push('/')
         }).catch(err=>{
             this.setState({
                 loading: false
