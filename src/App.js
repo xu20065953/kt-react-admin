@@ -1,14 +1,17 @@
 import React from 'react';
-import {Button} from "antd";
 import Router from "./router";
+import { Provider } from 'react-redux';
+import store from './store'
 
 function App(props) {
     console.log(props);
     return (
-    <div className="App">
-        <Router />
-    </div>
-  );
+        <Provider store={store}>
+            <div className="App">
+                <Router />
+            </div>
+        </Provider>
+    );
 }
 
 export default App;

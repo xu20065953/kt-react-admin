@@ -9,4 +9,14 @@ module.exports = function(app){
             }
         })
     )
+
+    app.use(
+        createProxyMiddleware("/auth",{
+            target:"https://oa.kstopa.com.cn:8000",
+            changeOrigin:true,
+            pathRewrite:{
+                "^/auth":""
+            }
+        })
+    )
 }
