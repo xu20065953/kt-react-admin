@@ -13,6 +13,7 @@ import Admin from '@/layout/admin';
 import Login from '@/pages/login';
 import Dashboard from '@/pages/dashboard';
 import SysRole from "@/pages/sys/role/sys-role";
+import AuthorizedRoute from "./AuthorizedRoute";
 
 export default class Router extends Component{
     render() {
@@ -25,6 +26,7 @@ export default class Router extends Component{
                             <Admin>
                                 <Switch>
                                     <Route path='/dashboard' component={Dashboard} />
+                                    {/*<AuthorizedRoute path="/sys/role" component={SysRole}></AuthorizedRoute>*/}
                                     <Route path='/sys/role' component={SysRole} />
                                     <Redirect to="/dashboard" />
                                 </Switch>

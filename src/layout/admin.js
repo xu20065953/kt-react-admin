@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { connect } from 'react-redux'
+import {Link, Redirect, withRouter} from "react-router-dom";
 import { Layout, Menu } from 'antd';
 import {
     MenuUnfoldOutlined,
@@ -9,11 +10,23 @@ import {
 const { Header, Sider, Content } = Layout;
 import SideMenu from './components/SideMenu'
 
+import { getUserInfo } from "@/api/login"
+
 
 class Admin extends Component{
     state = {
         collapsed: false,
     };
+
+    componentWillMount(){
+        if (this.props.token){
+            // 获取用户信息
+            getUserInfo().then(res=>{
+                let data = res.data;
+                this.props.setUserInfo(data);
+            });
+        }
+    }
 
     toggle = () => {
         this.setState({
@@ -22,6 +35,13 @@ class Admin extends Component{
     };
 
     render() {
+        const isLogin = this.props.token ? true : false;
+        if (!isLogin) {
+            console.log(this.props);
+            let redirect = this.props.location.pathname + this.props.location.search;
+            return <Redirect to={'/login?redirect=' + redirect} />;
+        }
+
         return (
             <Layout className={`app-layout ${this.state.collapsed ? "app-layout-collapsed" : ""}`}>
                 <Header className="site-layout-header">
@@ -47,4 +67,33 @@ class Admin extends Component{
     }
 }
 
-export default Admin;
+// 将redux state 映射为props
+const stateToProps = (state)=>{
+    return {
+        token: state.token,
+        userInfo: state.userInfo
+    }
+}
+
+// 将 action 派发到 store
+const dispatchToProps = (dispatch)=>{
+    return {
+        setToken(token){
+            let action = {
+                type: 'set_token',
+                value: token
+            }
+            dispatch(action)
+        },
+        setUserInfo(user){
+            let action = {
+                type: 'set_user',
+                value: user
+            }
+            dispatch(action)
+        }
+    }
+}
+
+export default connect(stateToProps, dispatchToProps)(withRouter(Admin));
+// export default Admin;
