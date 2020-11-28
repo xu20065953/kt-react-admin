@@ -6,10 +6,17 @@ import { getToken } from '@/utils/auth'
  * @param data
  */
 export function login(data){
+    let form = new FormData();
+    form.append("client_id", "mvc");
+    form.append("client_secret", "123456");
+    form.append("grant_type", "password");
+    form.append("username", data.username);
+    form.append("password", data.password);
+
     return axios({
         url: '/auth/connect/token',
         method: 'post',
-        data: data
+        data: form
     })
 }
 

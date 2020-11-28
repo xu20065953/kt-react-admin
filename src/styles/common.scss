@@ -34,15 +34,15 @@ body{
   cursor: pointer;
 }
 
-.side-menu-wrap{
-  height: calc(100vh - 64px);
-  overflow: auto;
-}
-.side-menu-wrap::-webkit-scrollbar-thumb{
-  background: hsla(0,0%,100%,.2);
-  border-radius: 3px;
-}
-.side-menu-wrap::-webkit-scrollbar-track{
-  background: hsla(0,0%,100%,.15);
-  border-radius: 3px;
-}
+//.side-menu-wrap{
+//  height: calc(100vh - 64px);
+//  overflow: auto;
+//}
+//.side-menu-wrap::-webkit-scrollbar-thumb{
+//  background: hsla(0,0%,100%,.2);
+//  border-radius: 3px;
+//}
+//.side-menu-wrap::-webkit-scrollbar-track{
+//  background: hsla(0,0%,100%,.15);
+//  border-radius: 3px;
+//}

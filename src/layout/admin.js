@@ -6,11 +6,13 @@ import {
     MenuUnfoldOutlined,
     MenuFoldOutlined,
 } from '@ant-design/icons';
+import { Scrollbars } from 'react-custom-scrollbars';
 
 const { Header, Sider, Content } = Layout;
 import SideMenu from './components/SideMenu'
 
 import { getUserInfo } from "@/api/login"
+import { setToken, setUserInfo } from "@/store/actions"
 
 
 class Admin extends Component{
@@ -37,7 +39,7 @@ class Admin extends Component{
     render() {
         const isLogin = this.props.token ? true : false;
         if (!isLogin) {
-            console.log(this.props);
+            // console.log(this.props);
             let redirect = this.props.location.pathname + this.props.location.search;
             return <Redirect to={'/login?redirect=' + redirect} />;
         }
@@ -54,8 +56,10 @@ class Admin extends Component{
                     <Link to="/">
                         <div className="logo" />
                     </Link>
-                    {/*导航菜单*/}
-                    <SideMenu></SideMenu>
+                    <Scrollbars style={{height: 'calc(100vh - 64px)'}}>
+                        {/*导航菜单*/}
+                        <SideMenu></SideMenu>
+                    </Scrollbars>
                 </Sider>
 
                 <Content className="site-layout-content">
@@ -70,8 +74,8 @@ class Admin extends Component{
 // 将redux state 映射为props
 const stateToProps = (state)=>{
     return {
-        token: state.token,
-        userInfo: state.userInfo
+        token: state.user.token,
+        userInfo: state.user.userInfo
     }
 }
 
@@ -79,18 +83,10 @@ const stateToProps = (state)=>{
 const dispatchToProps = (dispatch)=>{
     return {
         setToken(token){
-            let action = {
-                type: 'set_token',
-                value: token
-            }
-            dispatch(action)
+            dispatch(setToken(token))
         },
         setUserInfo(user){
-            let action = {
-                type: 'set_user',
-                value: user
-            }
-            dispatch(action)
+            dispatch(setUserInfo(user))
         }
     }
 }

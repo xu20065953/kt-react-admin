@@ -30,27 +30,20 @@ class AuthorizedRoute extends React.Component{
 // 将redux state 映射为props
 const stateToProps = (state)=>{
     return {
-        token: state.token,
-        userInfo: state.userInfo
+        token: state.user.token,
+        userInfo: state.user.userInfo
     }
 }
 
+import {setToken, setUserInfo} from "@/store/actions"
 // 将 action 派发到 store
 const dispatchToProps = (dispatch)=>{
     return {
         setToken(token){
-            let action = {
-                type: 'set_token',
-                value: token
-            }
-            dispatch(action)
+            dispatch(setToken(token))
         },
         setUserInfo(user){
-            let action = {
-                type: 'set_user',
-                value: user
-            }
-            dispatch(action)
+            dispatch(setUserInfo(user))
         }
     }
 }

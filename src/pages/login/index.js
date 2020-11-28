@@ -5,6 +5,7 @@ import { login } from "@/api/login"
 import { Form, Input, Button, Checkbox, Spin } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import './login.scss';
+import { setToken, setUserInfo } from "@/store/actions"
 
 class Login extends React.Component{
 
@@ -16,19 +17,11 @@ class Login extends React.Component{
     }
 
     onFinish = values => {
-        console.log('Received values of form: ', values);
         this.setState({
             loading: true
         });
-        let form = new FormData();
-        form.append("client_id", "mvc");
-        form.append("client_secret", "123456");
-        form.append("grant_type", "password");
-        form.append("username", values.username);
-        form.append("password", values.password);
 
-        login(form).then(res=>{
-            console.log(res);
+        login(values).then(res=>{
             this.setState({
                 loading: false
             });
@@ -98,7 +91,6 @@ class Login extends React.Component{
 const stateToProps = (state)=>{
     return {
         token: state.token,
-        userInfo: state.userInfo
     }
 }
 
@@ -106,19 +98,8 @@ const stateToProps = (state)=>{
 const dispatchToProps = (dispatch)=>{
     return {
         setToken(token){
-            let action = {
-                type: 'set_token',
-                value: token
-            }
-            dispatch(action)
+            dispatch(setToken(token))
         },
-        setUserInfo(user){
-            let action = {
-                type: 'set_user',
-                value: user
-            }
-            dispatch(action)
-        }
     }
 }
 
