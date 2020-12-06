@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@ant-design/pro-table": "^2.9.1",
+    "@ant-design/pro-form": "^1.7.5",
+    "@ant-design/pro-table": "^2.13.2",
     "@babel/core": "7.9.0",
     "@svgr/webpack": "4.3.3",
     "@testing-library/jest-dom": "^4.2.4",
@@ -11,7 +12,7 @@
     "@testing-library/user-event": "^7.1.2",
     "@typescript-eslint/eslint-plugin": "^2.10.0",
     "@typescript-eslint/parser": "^2.10.0",
-    "antd": "^4.6.6",
+    "antd": "^4.9.1",
     "axios": "^0.20.0",
     "babel-eslint": "10.1.0",
     "babel-jest": "^24.9.0",

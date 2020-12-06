@@ -2,7 +2,7 @@ import http from '@/utils/http'
 
 // 获取所有的Role
 export function getAll(data) {
-    if (data.queryString == '' || data.queryString == null){
+    if (data && (data.queryString == '' || data.queryString == null)){
         delete data.queryString;
     }
     return http({
