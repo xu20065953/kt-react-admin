@@ -18,7 +18,7 @@ export function getAll(data) {
 
 export function add(data) {
     return http({
-        url: baseUrl + '/api/Role/Post',
+        url: '/api/Role/Post',
         method: 'post',
         data: data
     })

@@ -1,13 +1,15 @@
 import React from "react";
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, message, Input } from 'antd';
+import { Button, message, Input, Row, Col } from 'antd';
 import ProTable, { ProColumns } from '@ant-design/pro-table';
 import ProForm, {
 	ModalForm,
 	ProFormText,
 	ProFormDateRangePicker,
 	ProFormSelect,
-	ProFormTextArea
+	ProFormTextArea,
+	ProFormSwitch,
+	ProFormDigit
 } from '@ant-design/pro-form';
 
 import { getAll, add } from '@/api/sys/role'
@@ -56,7 +58,21 @@ const columns = [
 		dataIndex: 'FMemo',
 		width: 150,
 		search: false,
-	}
+	},
+	{
+		title: '操作',
+		valueType: 'option',
+		render: (text, record, _, action) => [
+			<Button key="edit"
+				onClick={() => {
+
+				}}
+			>
+				编辑
+			</Button>,
+			<Button key="delete">删除</Button>
+		],
+	},
 ];
 
 
@@ -68,7 +84,8 @@ export default class SysRole extends React.Component{
 		super(props);
 		this.state = {
 			loading: false,
-			dataSource: []
+			dataSource: [],
+			form: {},
 		}
 	}
 
@@ -76,7 +93,8 @@ export default class SysRole extends React.Component{
 		this.getRole();
 	}
 
-	getRole = (form)=>{
+	getRole = ()=>{
+		let form = this.state.form;
 		getAll(form).then(res=>{
 			console.log(res);
 			let r = res;
@@ -89,10 +107,16 @@ export default class SysRole extends React.Component{
 				})
 			}
 		})
+	};
+
+	createHandle = ()=>{
+		this.setState({
+			visible: true
+		})
 	}
 
 	render() {
-		let { loading, dataSource} = this.state;
+		let { loading, dataSource } = this.state;
 		let Modal = (
 			<ModalForm
 				key="modal"
@@ -112,24 +136,52 @@ export default class SysRole extends React.Component{
 
 					console.log(values);
 					//message.success('提交成功！');
-					return true;
+					let result = await add(values).then(res=>{
+						if (res.success){
+							this.getRole();
+						}
+						return res.success;
+					}).catch(err=>{});
+					console.log(result);
+					return result
 				}}
 			>
 				<ProForm.Group>
-					<ProFormText
-						width="m"
-						name="FRoleName"
-						label="角色名称"
-						placeholder="请输入名称"
-					/>
-					<ProFormText width="m" name="FRoleCode" label="角色编号" placeholder="请输入名称" />
-				</ProForm.Group>
-				<ProForm.Group>
-					<ProFormText width="m" name="FEnable" label="状态" placeholder="请输入名称" />
-					<ProFormText width="m" name="FSort" label="排序" />
-				</ProForm.Group>
+					<Row gutter={15}>
 
-				<ProFormTextArea name="FMemo" label="备注" placeholder="请输入备注" />
+					</Row>
+				</ProForm.Group>
+				<Row gutter={15}>
+					<Col span={12}>
+						<ProFormText
+							width="m"
+							name="FRoleName"
+							label="角色名称"
+							placeholder="请输入名称"
+							rules={[{ required: true, message: "请输入角色名称" }]}
+						/>
+					</Col>
+					<Col span={12}>
+						<ProFormText
+							width="m"
+							name="FRoleCode"
+							label="角色编号"
+							placeholder="请输入角色编号"
+							rules={[{ required: true, message: "请输入角色编号" }]}
+						/>
+					</Col>
+
+					<Col span={12}>
+						<ProFormDigit width="m" name="FSort" initialValue={0} label="排序" />
+					</Col>
+					<Col span={12}>
+						<ProFormSwitch name="FEnable" label="状态" initialValue={true} />
+					</Col>
+
+					<Col span={24}>
+						<ProFormTextArea name="FMemo" label="备注" initialValue="" placeholder="请输入备注" />
+					</Col>
+				</Row>
 			</ModalForm>
 		);
 
@@ -143,6 +195,7 @@ export default class SysRole extends React.Component{
 					}}
 					loading={loading}
 					dataSource={dataSource}
+					scroll={{ y: 375 }}
 					// options={{
 					//     density: true,
 					//     reload: () => {
@@ -162,7 +215,10 @@ export default class SysRole extends React.Component{
 					]}
 					onSubmit={(params)=>{
 						console.log(params);
-						this.getRole(params ||{});
+						this.setState({
+							form: { ...this.state.form, ...params }
+						});
+						this.getRole();
 					}}
 				/>
 
