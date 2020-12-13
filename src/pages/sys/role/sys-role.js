@@ -1,6 +1,6 @@
 import React from "react";
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, message, Input, Row, Col } from 'antd';
+import { Button, message, Input, Row, Col, Modal } from 'antd';
 import ProTable, { ProColumns } from '@ant-design/pro-table';
 import ProForm, {
 	ModalForm,
@@ -12,8 +12,7 @@ import ProForm, {
 	ProFormDigit
 } from '@ant-design/pro-form';
 
-import { getAll, add } from '@/api/sys/role'
-import {edit} from "../../../api/sys/role";
+import { getAll, add, edit, del  } from '@/api/sys/role'
 
 
 let formData = {
@@ -35,7 +34,7 @@ export default class SysRole extends React.Component{
 			dataSource: [],
 			form: {
 				page: 1,
-				pageSize: 20
+				pageSize: 50
 			},
 			total: 0,
 			title: "新建",
@@ -147,12 +146,24 @@ export default class SysRole extends React.Component{
 					>
 						编辑
 					</Button>,
-					<Button key="delete">删除</Button>
+					<Button key="delete"
+					        onClick={()=>{
+						        Modal.confirm({
+							        title: "提示",
+							        content: "您确认要删除此角色吗？",
+							        onOk: ()=>{
+								        del(record).then(res=>{
+											this.getRole();
+								        })
+							        }
+						        })
+					        }}
+					>删除</Button>
 				],
 			},
 		];
 
-		let Modal = (
+		let modal = (
 			<ModalForm
 				key="modal"
 				title={title}
@@ -302,7 +313,7 @@ export default class SysRole extends React.Component{
 					}}
 				/>
 
-				{ visible && Modal }
+				{ visible && modal }
 			</>
 		)
 	}
