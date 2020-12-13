@@ -34,14 +34,14 @@ export function get(id) {
 
 export function del({ FRoleId }) {
     return http({
-        url: baseUrl + '/api/Role/Delete/' + FRoleId,
+        url: '/api/Role/Delete/' + FRoleId,
         method: 'delete'
     })
 }
 
 export function edit(data) {
     return http({
-        url: baseUrl + '/api/Role/Put',
+        url: '/api/Role/Put',
         method: 'put',
         data: data
     })
